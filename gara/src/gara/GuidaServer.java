@@ -1,6 +1,7 @@
 package gara;
 
 import java.io.*;
+import java.lang.Thread;
 import java.net.*;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.port.MotorPort;
@@ -30,10 +31,15 @@ public class GuidaServer {
                         System.out.println("Ricevuto comando: " + command);
 
                         switch (command) {
-                            case "W": motorA.setSpeed(1000); motorA.forward(); motorB.setSpeed(767); motorB.forward(); break;
-                            case "S": motorA.setSpeed(1000);  motorA.backward(); motorB.setSpeed(1000); motorB.backward(); break;
-                            case "A": motorB.setSpeed(725); motorB.forward(); motorA.setSpeed(100); motorA.forward();break;
-                            case "D": motorA.setSpeed(500); motorA.forward(); motorB.setSpeed(100); motorB.forward(); break;
+                            case "W": motorA.setSpeed(800); motorA.forward(); motorB.setSpeed(800); motorB.forward(); break;
+                            case "S": motorA.setSpeed(800);  motorA.backward(); motorB.setSpeed(800); motorB.backward(); break;
+                            case "A": motorB.setSpeed(800); motorB.forward(); motorA.setSpeed(500); motorA.forward();break;
+                            case "D": motorA.setSpeed(800); motorA.forward(); motorB.setSpeed(500); motorB.forward(); /*try {
+								Thread.sleep(50);
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							} */motorA.setSpeed(800); motorA.forward(); motorB.setSpeed(800); motorB.forward();break;
                             case "TURBO":
                                 motorA.setSpeed((int) motorA.getMaxSpeed()); // Turbo Mode!
                                 motorB.setSpeed((int) motorB.getMaxSpeed());
