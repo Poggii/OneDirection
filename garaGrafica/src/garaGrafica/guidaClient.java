@@ -123,6 +123,10 @@ public class guidaClient extends JFrame {
                     case KeyEvent.VK_A -> cmd = "A";
                     case KeyEvent.VK_D -> cmd = "D";
                     case KeyEvent.VK_X -> cmd = "X";
+                    case KeyEvent.VK_1 -> cmd = "1";
+                    case KeyEvent.VK_2-> cmd = "2";
+                    case KeyEvent.VK_3 -> cmd = "3";
+                    case KeyEvent.VK_Q -> cmd = "Q";
                     case KeyEvent.VK_R -> {
                         System.out.println("Restart comando inviato");
                         return;
