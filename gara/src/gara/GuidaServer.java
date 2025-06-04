@@ -3,10 +3,19 @@ package gara;
 import java.io.*;
 import java.net.*;
 
+import lejos.hardware.Sound;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.port.MotorPort;
+import lejos.hardware.port.SensorPort;
+import lejos.hardware.sensor.EV3UltrasonicSensor;
+import lejos.robotics.SampleProvider;
 
 public class GuidaServer {
+	private static EV3UltrasonicSensor sensore = new EV3UltrasonicSensor(SensorPort.S4); 
+    private static SampleProvider distanza = sensore.getDistanceMode();
+    final static float[] sample = new float[distanza.sampleSize()];
+    private static float paura = 0.2f;
+
     public static void main(String[] args) {
         int PORT = 1234;
 
@@ -16,7 +25,7 @@ public class GuidaServer {
             // Inizializzazione motori
             EV3LargeRegulatedMotor motorA = new EV3LargeRegulatedMotor(MotorPort.A);
             EV3LargeRegulatedMotor motorB = new EV3LargeRegulatedMotor(MotorPort.B);
-
+            
             int velocitaMassima = 0;
             motorA.setSpeed(velocitaMassima);
             motorB.setSpeed(velocitaMassima);
@@ -34,6 +43,9 @@ public class GuidaServer {
                     // Copie finali per l'uso nel thread
                     final EV3LargeRegulatedMotor mA = motorA;
                     final EV3LargeRegulatedMotor mB = motorB;
+                    
+                    
+
 
                     // Thread per inviare velocità al client ogni secondo
                     Thread speedSender = new Thread(new Runnable() {
@@ -51,6 +63,31 @@ public class GuidaServer {
                                 System.out.println("Errore invio velocità: " + e.getMessage());
                             }
                         }
+                    });
+                    
+                    Thread bipThread = new Thread(new Runnable() {
+                		@Override
+                		
+                		public void run() 
+                		{
+                			while(true)
+                			{
+                				distanza.fetchSample(sample, 0);
+                				float misura = sample[0];
+                				if(misura < paura)
+                				{
+                					Sound.beep();
+                				}
+                				try
+                				{
+                					Thread.sleep(1000);
+                				}
+                				catch(InterruptedException e)
+                				{
+                					break;
+                				}
+                			}
+                		}
                     });
                     speedSender.start();
 
@@ -70,16 +107,33 @@ public class GuidaServer {
                                 motorB.backward();
                                 break;
                             case "A":
-                                motorA.setSpeed(velocitaMassima / 2);
+                                motorA.setSpeed((int) (velocitaMassima / 2));
                                 motorB.setSpeed(velocitaMassima);
                                 motorA.forward();
                                 motorB.forward();
+								/*try {
+									Thread.sleep(50);
+								} catch (InterruptedException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+								motorA.setSpeed(velocitaMassima);
+                                motorB.setSpeed(velocitaMassima);*/
                                 break;
                             case "D":
                                 motorA.setSpeed(velocitaMassima);
-                                motorB.setSpeed(velocitaMassima / 2);
+                                motorB.setSpeed((int) (velocitaMassima / 2));
                                 motorA.forward();
                                 motorB.forward();
+                                /*try {
+									Thread.sleep(50);
+								} catch (InterruptedException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+								motorA.setSpeed(velocitaMassima);
+                                motorB.setSpeed(velocitaMassima);*/
+           
                                 break;
                             case "1":
                                 velocitaMassima = 400;
@@ -90,7 +144,7 @@ public class GuidaServer {
                                 System.out.println("Marcia 2 impostata: velocità massima = " + velocitaMassima);
                                 break;
                             case "3":
-                                velocitaMassima = 1000;
+                                velocitaMassima = 1100;
                                 System.out.println("Marcia 3 impostata: velocità massima = " + velocitaMassima);
                                 break;
                             case "TURBO":

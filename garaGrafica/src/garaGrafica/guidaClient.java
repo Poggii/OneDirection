@@ -5,6 +5,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.net.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class guidaClient extends JFrame {
     private JTextField ipTextField;
@@ -36,7 +38,6 @@ public class guidaClient extends JFrame {
         ipTextField = new JTextField("10.0.1.1", 15);
         ipPortPanel.add(ipTextField);
         ipPortPanel.add(Box.createRigidArea(new Dimension(15, 0)));
-
         ipPortPanel.add(new JLabel("Porta:"));
         ipPortPanel.add(Box.createRigidArea(new Dimension(5, 0)));
 
@@ -98,23 +99,32 @@ public class guidaClient extends JFrame {
             JOptionPane.showMessageDialog(this, "Connesso a " + ip + ":" + port);
             System.out.println("Connesso al server!");
 
-            // Thread per ricevere la velocità dal server
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        String line;
-                        while ((line = inStream.readLine()) != null) {
-                            if (line.startsWith("VEL:")) {
-                                String speed = line.split(":")[1].trim();
-                                speedLabel.setText(speed);
-                            }
+            // Thread per ricevere la velocità dal server e salvarla su file
+            new Thread(() -> {
+                try (BufferedWriter logWriter = new BufferedWriter(new FileWriter("C:\\Users\\Esame\\Documents\\GitHub\\OneDirection\\velocita_log.txt", true))) {
+                    String line;
+                    while ((line = inStream.readLine()) != null) {
+                        if (line.startsWith("VEL:")) {
+                            String speed = line.split(":")[1].trim();
+                            speedLabel.setText(speed);
+
+                            // Aggiungi timestamp
+                            String timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+                            String logEntry = timestamp + " - Velocità: " + speed;
+
+                            // Scrive su file
+                            logWriter.write(logEntry);
+                            logWriter.newLine();
+                            logWriter.flush();
+
+                            System.out.println("LOG: " + logEntry);
                         }
-                    } catch (IOException e) {
-                        e.printStackTrace();
                     }
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }).start();
+
         } catch (IOException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Errore nella connessione al server.");
