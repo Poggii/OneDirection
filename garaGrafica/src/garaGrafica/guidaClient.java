@@ -3,9 +3,8 @@ package garaGrafica;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.net.Socket;
+import java.io.*;
+import java.net.*;
 
 public class guidaClient extends JFrame {
     private JTextField ipTextField;
@@ -13,6 +12,7 @@ public class guidaClient extends JFrame {
     private JLabel speedLabel;
     private Socket socket;
     private PrintWriter outStream;
+    private BufferedReader inStream;
 
     private JButton btnUp, btnDown, btnLeft, btnRight, btnStop;
 
@@ -94,56 +94,60 @@ public class guidaClient extends JFrame {
         try {
             socket = new Socket(ip, port);
             outStream = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()), true);
+            inStream = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             JOptionPane.showMessageDialog(this, "Connesso a " + ip + ":" + port);
             System.out.println("Connesso al server!");
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Errore connessione: " + e.getMessage());
+
+            // Thread per ricevere la velocità dal server
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        String line;
+                        while ((line = inStream.readLine()) != null) {
+                            if (line.startsWith("VEL:")) {
+                                String speed = line.split(":")[1].trim();
+                                speedLabel.setText(speed);
+                            }
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
+        } catch (IOException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Errore nella connessione al server.");
         }
     }
 
-    private void sendCommand(String cmd) {
+    private void sendCommand(String command) {
         if (outStream != null) {
-            outStream.println(cmd);
-        } else {
-            JOptionPane.showMessageDialog(this, "Non connesso al server.");
+            outStream.println(command);
         }
     }
 
     private void setupKeyListener() {
-        this.setFocusable(true);
-        this.requestFocusInWindow();
-
-        this.addKeyListener(new KeyAdapter() {
+        addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                String cmd;
-                switch (e.getKeyCode()) {
-                    case KeyEvent.VK_W -> cmd = "W";
-                    case KeyEvent.VK_S -> cmd = "S";
-                    case KeyEvent.VK_A -> cmd = "A";
-                    case KeyEvent.VK_D -> cmd = "D";
-                    case KeyEvent.VK_X -> cmd = "X";
-                    case KeyEvent.VK_1 -> cmd = "1";
-                    case KeyEvent.VK_2-> cmd = "2";
-                    case KeyEvent.VK_3 -> cmd = "3";
-                    case KeyEvent.VK_Q -> cmd = "Q";
-                    case KeyEvent.VK_R -> {
-                        System.out.println("Restart comando inviato");
-                        return;
-                    }
-                    default -> {
-                        return;
-                    }
-                }
-                sendCommand(cmd);
+                if (e.getKeyCode() == KeyEvent.VK_W) sendCommand("W");
+                if (e.getKeyCode() == KeyEvent.VK_S) sendCommand("S");
+                if (e.getKeyCode() == KeyEvent.VK_A) sendCommand("A");
+                if (e.getKeyCode() == KeyEvent.VK_D) sendCommand("D");
+                if (e.getKeyCode() == KeyEvent.VK_X) sendCommand("X");
+                if (e.getKeyCode() == KeyEvent.VK_1) sendCommand("1");
+                if (e.getKeyCode() == KeyEvent.VK_2) sendCommand("2");
+                if (e.getKeyCode() == KeyEvent.VK_3) sendCommand("3");
             }
         });
+        setFocusable(true);
     }
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            guidaClient remote = new guidaClient();
-            remote.setVisible(true);
+            guidaClient client = new guidaClient();
+            client.setVisible(true);
         });
     }
 }
