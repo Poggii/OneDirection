@@ -14,7 +14,7 @@ public class GuidaServer {
 	private static EV3UltrasonicSensor sensore = new EV3UltrasonicSensor(SensorPort.S4); 
     private static SampleProvider distanza = sensore.getDistanceMode();
     final static float[] sample = new float[distanza.sampleSize()];
-    private static float paura = 0.2f;
+    private static float distanzaMin = 0.2f;
 
     public static void main(String[] args) {
         int PORT = 1234;
@@ -74,7 +74,7 @@ public class GuidaServer {
                 			{
                 				distanza.fetchSample(sample, 0);
                 				float misura = sample[0];
-                				if(misura < paura)
+                				if(misura < distanzaMin)
                 				{
                 					Sound.beep();
                 				}
