@@ -1,0 +1,143 @@
+﻿DOCUMENTAZIONE
+
+
+DAILY SCRUM
+Cosa ho fatto ieri?
+Cosa farò oggi?
+Quali impedimenti ho?
+
+
+
+
+Giorno 12/05
+Planning poker—->Daily Scrum—>Progettazione compiti giorno 2
+Creazione team
+-Assegnazione ruoli
+SPRINT PLANNING→Definizione backlog
+Backlog
+-Assegnazione compiti
+https://online.visual-paradigm.com/ tool per creazione diagrammi classe, sequenza e casi d’uso
+Planning poker
+-Documentazione—>3 ore
+-Creazione presentazione—>5 ore
+-Programmazione client—->3 ore
+-Programmazione server—->3 ore
+-Usecase diagram—->2 ore
+-Sequence diagram—->2 ore
+-Class diagram—>2 ore
+-Gestione repository—->1 ore
+Creazione e collegamento del progetto su github e le repository
+
+
+
+
+Giorno 2 13/05
+Tede e Tone—>Use case diagram
+Vulpes e Poggi—->Programmazione client
+Metz—->Documentazione e sequence diagram
+Tede, Tone, Metz—->Class diagram
+
+
+Singolarmente abbiamo definito ciò che abbiamo fatto ieri e stabilito cosa iniziare oggi( presentazione, progettazione, documentazione e creazione diagrammi)
+Creazione generica dello use case diagram.
+Per diagramma di classe e sequence diagram aspettare la fine del progetto o l’avanzamento della programmazione.
+Installazione di un Lejos ev3 per connessione tra robot e computer tramite bluetooth, all’interno di eclipse esiste un plug in di lejos con un file java specifico per permettere i movimenti.
+Test funzionalità robot sensori, rumori e stampa
+
+
+ORGANIZZAZIONE PRESENTAZIONE
+Spiegazione progetto, scopo
+come abbiamo organizzato il lavoro (documentazione)
+spiegazione diagrammmi d’uso
+code explanation
+robot explanation 
+gara 
+
+
+Giorno 20/05 
+DAILY SCRUM
+Tede Tone—>continuo presentazione
+Elia—>documentazione
+Vulpes Poggi—>Codice per robot 
+
+
+Test movimento predefinito
+Test rettangolare del robot 
+Test movimento tempo reale
+Test regolazione velocità
+Test sensibilità
+
+
+Codice tramite Eclipse
+Creazione foglio excel 
+Primo test su percorso con proposti miglioramenti
+-Sensibilita di movimento
+-Sensibilita di direzione
+
+
+Giorno 21/05
+DAILY SCRUM
+Tede //
+Tone—>continuo presentazione
+Elia—>documentazione (documenti e fogli google)
+Vulpes Poggi—>test robot
+
+
+Test regolazione potenza motore per direzione
+Creazione fogli google per seguire i test 
+Esportazione di tutti i file su github
+
+
+
+
+Giorno 27/05
+Tede //
+Tone—>presentazione
+Elia—->diagrammi e documentazione
+Vulpes Poggi—>codice robot
+impedimento codice robot causa batteria scarica
+continuo della presentazione + documentazione
+completamento dei SQD e USD
+
+
+
+
+Giorno 28/05
+Tede e Tone—>presentazione
+Elia—->documentazione
+Vulpes e Poggi—>codice 
+Creazione interfaccia grafica per connessione e movimento del robot
+Modifica dei diagrammi e attesa del prodotto finale
+SQD completato
+UCD completato
+
+
+Giorno 29/05
+Cambio dei requisiti con aggiunta delle marce
+Modifica dei diagrammi
+completamento diagrammi SQD e USD 
+attesa del codice per CSD
+
+
+Giorno 03/06
+Implementazione:
+-marce
+-sensore
+Test marce 
+Test sensore
+Class diagram fino a codice dato su github
+
+
+
+
+Giorno 04/06
+Diagrammi completati fino a codice presente su github
+Presentazione
+Completamento diagrammi
+Condivisione nel repository
+Test tempi
+Test sensore vicinanza
+
+
+Giorno 05/06
+GIORNO DELLA GARA
